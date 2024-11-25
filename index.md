@@ -13,18 +13,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Tutorial steps 
 
-[**Introduction**](#Introduction)  
-[**Part 1: Basic word segmentation**](#Part 1: Basic word segmentation )  
-[**a. Tokenize the text**](#a. Tokenize the text )  
-[**b. Use of word cloud**](#b. Use of word cloud )  
-[**c. sentiment analysis**](#c. sentiment analysis )  
-[**d. Visualization**](#d. Visualization)  
-[**Part 2: Using LDA model**](#Part 2: Using LDA model )  
-[**a. What is LDA model and how it works?**](#a. What is LDA model and how it works?)  
-[**b. Creating corpus**](#b. Creating corpus )  
-[**c. Use of word cloud**](#c. Use of word cloud )  
-[**d. sentiment analysis**](#d. sentiment analysis )  
-[**e. Visualization**](#e. Visualization )  
+[**Introduction**](#introduction)  
+[**Part 1: Basic word segmentation**](#part-1-basic-word-segmentation)  
+[**a. Tokenize the text**](#a-tokenize-the-text)  
+[**b. Use of word cloud**](#b-use-of-word-cloud)  
+[**c. sentiment analysis**](#c-sentiment-analysis)  
+[**d. Visualization**](#d-visualization)  
+[**Part 2: Using LDA model**](#part-2-using-lda-model)  
+[**a. What is LDA model and how it works?**](#a-what-is-lda-model-and-how-it-works)  
+[**b. Creating corpus**](#b-creating-corpus)  
+[**c. Use of word cloud**](#c-use-of-word-cloud)  
+[**d. sentiment analysis**](#d-sentiment-analysis)  
+[**e. Visualization**](#e-visualization)  
 
 ----
 
