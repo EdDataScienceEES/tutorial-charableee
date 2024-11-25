@@ -4,11 +4,13 @@ output: html_document
 date: "2024-11-21"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Xiaoye Ren
+---
 
 ## Tutorial aims 
+
+
+了解R语言中tidytext包的使用，数据分析与可视化
 
 
 ## Tutorial steps 
@@ -26,21 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 [**d. sentiment analysis**](#d-sentiment-analysis)  
 [**e. Visualization**](#e-visualization)  
 
-## Introduction 
-## Part 1: Basic word segmentation 
-### a. Tokenize the text 
-### b. Use of word cloud 
-### c. sentiment analysis 
-### d. Visualization 
-## Part 2: Using LDA model 
-### a. What is LDA model and how it works?  
-### b. Creating corpus 
-### c. Use of word cloud 
-### d. sentiment analysis 
-### e. Visualization 
-
-
-----
+---
 
 ## Introduction 
 
