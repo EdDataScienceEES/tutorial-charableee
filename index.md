@@ -27,15 +27,16 @@ Exploring the use of mapping techniques for conducting data analysis across diff
 
 ## Introduction 
 
-Natural Language Processing (NLP)是一种使用计算程序理解人类书面语言的能力。这一技术应用包含语义分析，主题建模，情感识别等。我们可以使用NLP技术快速挖掘大规模的文本数据并找到文档中的思想联系。
+Natural Language Processing (NLP) is a computational capability that enables the understanding of human written language. Applications of this technology include semantic analysis, topic modeling, and sentiment recognition. NLP techniques allow for the rapid analysis of large-scale textual data, enabling the identification of conceptual connections within documents.
+
 （pic 1）
 
-我们课程中使用的数据包来源于Environment News Dataset，您可以在这里（ https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download）找到该数据包的raw data。
-我们推荐您在这里（）下载该数据包删除文章原文column后的版本。在本教程中，我们会主要使用该数据包对文章的introduction部分进行分析。
+The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset here（ https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download）
+However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
 ## Part 1: Basic word segmentation 
 
-在开始教程之前，请保证您已经下载并加载了以下拓展包：
+Before starting the tutorial, please ensure that you have downloaded and loaded the following extension packages:
 
 #### Summary of Library Contributions in Code
 
@@ -48,15 +49,15 @@ Natural Language Processing (NLP)是一种使用计算程序理解人类书面�
 | **wordcloud**   | Generate keyword clouds related to `pollution`.                                                  |
 | **ggpubr**      | Combine multiple plots and add shared legends for final visualization.                           |
 
-在本次教程中，我们将首先学习使用R语言中的tidytext包对英国卫报环境主题的文本进行文本分词，关键词词频分析与词云可视化和情感分析。
+In this tutorial, we will begin by learning how to use the `tidytext`  package in R to perform text tokenization, keyword frequency analysis, word cloud visualization, and sentiment analysis on environmental-themed articles from The Guardian.
 
 ### a. Tokenize the text 
 
-请首先在RStudio中按照以下路径创建一个新的空白脚本 
+First, create a new blank script in RStudio by navigating to the following path:
 
 `File -> New File -> R Script` 
 
-我们开始配置我们的工作环境。在这一步中，如果您发现RStudio返回了No such file in directory的报错，请使用`getwd()`再次确认您的工作路径。
+Now, let’s configure our working environment. At this step, if you encounter the error message "No such file in directory", use ` getwd()`  to double-check your working directory.
 
 ```
 
@@ -80,9 +81,8 @@ news_data <- read.csv("your_file_path")
 
 ```
 
-现在，我们想要研究和"pollution"相关的主题，因此，我们首先Create a frame related to pollution topic。
-当我们观察raw data数据集的时候，我们会发现一些空白数据，这些数据会干扰我们后续分析，所以我们也将其移除。
-如果我们要针对年份进行分析，该数据集中存在部分年份只包含极少的数据，因此我们移除掉这些数据过少的年份。
+Now, we want to study topics related to `pollution` . First, we will create a frame related to the pollution topic.
+When observing the raw data dataset, you may notice some blank entries, which can interfere with subsequent analysis. Therefore, we will remove these entries. Additionally, if we intend to analyze the data by year, we observe that some years contain only a small amount of data. To ensure reliable analysis, we will exclude these underrepresented years.
 
 ```
 
@@ -101,21 +101,25 @@ head(pollution_data)
 str(pollution_data)
   
 ```
-接着，我们开始使用`tidytext`包自带的停用词词包。我们首先加载`stop_words`dataframe.
+Next, we will load the `stop_words` dataframe, which is included in the `tidytext` package.
 
 ```
 data("stop_words")  #Input stop_words dataframe from tidytext
 
 ```
-您可以尝试打开`stop_words` dataframe，该停用词词包格式如下。`lexion` 列下方的`SMART` 是一类信息检索系统。这意味着该停用词词包来源于该停用词集合。
+You can try opening the `stop_words` dataframe to explore its structure. The format of this stop words lexicon is as follows. Under the `lexicon` column, the label `SMART` represents a class of information retrieval systems. This indicates that the stop word list originates from the SMART stop word set.
 
-    word      |   lexion
-------------- | -------------
-      a       |   SMART
-     a's      |   SMART
+| word       | lexicon |
+|------------|---------|
+| a          | SMART   |
+| a's        | SMART   |
+| able       | SMART   |
+| about      | SMART   |
+| above      | SMART   |
+| according  | SMART   |
 
-
-下一步，我们使用`tidytext`包首先将我们的句子分成独立的单词。接着，我们使用`stop_words`包移除tokenized words中的常见词语，并将我们研究的主题`pollution`筛选出来。请注意，我们在下列代码中选择`Exclude "pollution" word itself` 是因为我们需要避免`pollution`主导统计结果。因为我们需要找到的是与该词汇共线的关键词而非该词语本身。 
+Next, we use the `tidytext` package to tokenize our sentences into individual words. By using the `stop_words` dataframe, we will remove common words from the tokenized words and filter our `pollution` topic.
+Please note that in the following code, we exclude the word `pollution` itself. This is because we aim to avoid having pollution dominate the results. The goal is to identify keywords that co-occur with this term, rather than the term itself.
 
 ```
 pollution_counts <- pollution_data %>%
@@ -130,7 +134,22 @@ pollution_counts <- pollution_data %>%
 
 ### b. Use of word cloud 
 
-当我们
+
+
+```
+
+wordcloud(
+  words = pollution_counts$word,
+  freq = pollution_counts$n,
+  max.words = 50, 
+  scale = c(3, 0.5),
+  colors = brewer.pal(6, "Dark2")
+)
+
+```
+
+
+
 
 ### c. sentiment analysis 
 
