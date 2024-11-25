@@ -1,9 +1,3 @@
----
-title: "test"
-output: html_document
-date: "2024-11-21"
----
-
 *Xiaoye Ren*
 ----
 
@@ -62,7 +56,7 @@ Natural Language Processing (NLP)是一种使用计算程序理解人类书面�
 
 `File -> New File -> R Script` 
 
-我们开始配置我们的工作环境
+我们开始配置我们的工作环境。在这一步中，如果您发现RStudio返回了No such file in directory的报错，请使用`getwd()`再次确认您的工作路径。
 
 ```
 
@@ -85,8 +79,10 @@ library(ggpubr)
 news_data <- read.csv("your_file_path")
 
 ```
-在这一步中，如果您发现RStudio返回了No such file in directory的报错，请使用`getwd()`再次确认您的工作路径。
-我们想要研究和"pollution"相关的主题，因此，我们首先Create a frame related to pollution topic
+
+现在，我们想要研究和"pollution"相关的主题，因此，我们首先Create a frame related to pollution topic。
+当我们观察raw data数据集的时候，我们会发现一些空白数据，这些数据会干扰我们后续分析，所以我们也将其移除。
+如果我们要针对年份进行分析，该数据集中存在部分年份只包含极少的数据，因此我们移除掉这些数据过少的年份。
 
 ```
 
@@ -100,19 +96,41 @@ pollution_data <- news_data %>%
   mutate(Date.Published = as.character(Date.Published)) %>% # Convert Date.Published to character format
   arrange(Date.Published)                                 # Sort the data by Date.Published
   
-```
-
-
-```
-# Examine the tidy data frame
-head(pollution_data)
+# remember always examine the data frame before you start the next step
+head(pollution_data) 
 str(pollution_data)
+  
 ```
+接着，我们开始使用`tidytext`包自带的停用词词包。我们首先加载`stop_words`dataframe.
 
+```
+data("stop_words")  #Input stop_words dataframe from tidytext
+
+```
+您可以尝试打开`stop_words` dataframe，该停用词词包格式如下。`lexion` 列下方的`SMART` 是一类信息检索系统。这意味着该停用词词包来源于该停用词集合。
+
+    word      |   lexion
+------------- | -------------
+      a       |   SMART
+     a's      |   SMART
+
+
+下一步，我们使用`tidytext`包首先将我们的句子分成独立的单词。接着，我们使用`stop_words`包移除tokenized words中的常见词语，并将我们研究的主题`pollution`筛选出来。请注意，我们在下列代码中选择`Exclude "pollution" word itself` 是因为我们需要避免`pollution`主导统计结果。因为我们需要找到的是与该词汇共线的关键词而非该词语本身。 
+
+```
+pollution_counts <- pollution_data %>%
+  unnest_tokens(word, Intro.Text) %>%                # text tokenized into individual words
+  anti_join(stop_words, by = "word") %>%             # Remove stop words
+  filter(any(word == "pollution")) %>%               # Filter documents containing the word "pollution"
+  ungroup() %>%                                      # Ungroup data 
+  filter(word != "pollution") %>%                    # Exclude "pollution" word itself
+  count(word, sort = TRUE)                           # Count the frequency 
+
+```
 
 ### b. Use of word cloud 
 
-aaaaa
+当我们
 
 ### c. sentiment analysis 
 
