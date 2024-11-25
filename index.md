@@ -8,11 +8,62 @@ date: "2024-11-21"
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Tutorial aims 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Tutorial steps 
+
+[Introduction](#Introduction)
+#### Part 1: Basic word segmentation 
+#### a): Tokenize the text 
+#### b): Use of word cloud 
+#### c): sentiment analysis 
+#### d): Visualization 
+#### Part 2: Using LDA model 
+#### a): What is LDA model and how it works? 
+#### b): Creating corpus 
+#### c): Use of word cloud 
+#### d): sentiment analysis 
+#### e): Visualization 
+
+## Introduction 
+
+
+
+## Part 1: Basic word segmentation 
+
+### a): Tokenize the text 
+
+
+
+### b): Use of word cloud 
+
+
+### c): sentiment analysis 
+
+
+### d): Visualization 
+
+
+
+## Part 2: Using LDA model 
+
+### a): What is LDA model and how it works?  
+
+
+
+### b): Creating corpus 
+
+
+
+### c): Use of word cloud 
+
+
+### d): sentiment analysis 
+
+
+### e): Visualization 
+
 
 ```{r cars}
 summary(cars)
