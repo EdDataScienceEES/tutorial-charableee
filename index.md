@@ -4,15 +4,13 @@ output: html_document
 date: "2024-11-21"
 ---
 
-Xiaoye Ren
+*Xiaoye Ren*
 
 ----
 
 ## Tutorial aims 
 
-
 了解R语言中tidytext包的使用，数据分析与可视化
-
 
 ## Tutorial steps 
 
