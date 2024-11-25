@@ -1,4 +1,4 @@
-*Xiaoye Ren*
+_Xiaoye Ren_
 ----
 
 ## Tutorial aims 
@@ -60,7 +60,6 @@ First, create a new blank script in RStudio by navigating to the following path:
 Now, let’s configure our working environment. At this step, if you encounter the error message "No such file in directory", use ` getwd()`  to double-check your working directory.
 
 ```
-
 # Coding Club tutorial
 # Xiaoye Ren
 # 25/11/2024
@@ -78,14 +77,12 @@ library(ggpubr)
 
 ## Load csv Data 
 news_data <- read.csv("your_file_path")
-
 ```
 
 Now, we want to study topics related to `pollution` . First, we will create a frame related to the pollution topic.
 When observing the raw data dataset, you may notice some blank entries, which can interfere with subsequent analysis. Therefore, we will remove these entries. Additionally, if we intend to analyze the data by year, we observe that some years contain only a small amount of data. To ensure reliable analysis, we will exclude these underrepresented years.
 
 ```
-
 pollution_data <- news_data %>%
   filter(
     grepl("pollution", Intro.Text, ignore.case = TRUE) &  # Detect "pollution", ignoring case
@@ -99,13 +96,11 @@ pollution_data <- news_data %>%
 # remember always examine the data frame before you start the next step
 head(pollution_data) 
 str(pollution_data)
-  
 ```
 Next, we will load the `stop_words` dataframe, which is included in the `tidytext` package.
 
 ```
 data("stop_words")  #Input stop_words dataframe from tidytext
-
 ```
 You can try opening the `stop_words` dataframe to explore its structure. The format of this stop words lexicon is as follows. Under the `lexicon` column, the label `SMART` represents a class of information retrieval systems. This indicates that the stop word list originates from the SMART stop word set.
 
@@ -129,32 +124,64 @@ pollution_counts <- pollution_data %>%
   ungroup() %>%                                      # Ungroup data 
   filter(word != "pollution") %>%                    # Exclude "pollution" word itself
   count(word, sort = TRUE)                           # Count the frequency 
-
 ```
 
 ### b. Use of word cloud 
 
-
+`Pointcloud` is a simple way for us to visualize the frequency frame information. It can help us visually see the frequency of occurrence of the frame.
 
 ```
-
 wordcloud(
-  words = pollution_counts$word,
-  freq = pollution_counts$n,
-  max.words = 50, 
-  scale = c(3, 0.5),
-  colors = brewer.pal(6, "Dark2")
+  words = pollution_counts$word,                    # Words to include in the word cloud
+  freq = pollution_counts$n,                        # Setting frequencies of the words
+  max.words = 50,                                   # Maximum number of words to display
+  scale = c(3, 0.5),                                # Scaling for word size
+  colors = brewer.pal(6, "Dark2")                   # color palette
 )
-
 ```
 
+This will be the output of our pointcloud:
 
-
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/word%20cloud%20plotting.png?raw=true)
 
 ### c. sentiment analysis 
 
+_Sentiment analysis_ is crucial in our report, as it helps us uncovering the emotional tone embedded in the articles.By identifying the sentiment, we can then track how media frames issues, such as our topic, pollution, over time. 
+
+In our study, we want to analyze the monthly sentiment trend. Here, we can tokenize the text first and then match it with a built-in sentiment lexicon from `tidytext`.
+Here, we tokenize the text first. We use `Bing` package from `tidytext` to analyze sentiment.
+
+```
+sentiment_pollution <- pollution_data %>%
+  unnest_tokens(word, Intro.Text) %>%               # Tokenize the text
+  inner_join(get_sentiments("bing"), by = "word")  # Match with Bing sentiment lexicon
+```
+We want to extract each year and month in our study to get the sentiment trend overtime. 
+Then, we calculate the sentiment counts using `mutate()` and reshape data into wide format to make it easy to view.
+
+```
+monthly_sentiment <- sentiment_pollution %>%
+  mutate(
+    Year = year(as.Date(Date.Published)),      # Extract the year
+    Month = month(as.Date(Date.Published))    # Extract the month
+  ) %>%
+  count(Year, Month, sentiment) %>%           # Count occurrences by year, month, and sentiment type
+  spread(sentiment, n, fill = 0) %>%          # Reshape data to a wide format
+  mutate(Sentiment = positive - negative)     # Calculate net sentiment score
+```
+This will be the dataframe we will get after we run the code now:
+
+| Year | Month | negative | positive | Sentiment |
+|------|-------|----------|----------|-----------|
+| 2018 | 1     | 0        | 1        | 1         |
+| 2018 | 2     | 11       | 3        | -8        |
+| 2018 | 3     | 8        | 1        | -7        |
+| 2018 | 4     | 8        | 1        | -7        |
+| 2018 | 5     | 11       | 2        | -9        |
 
 ### d. Visualization 
+
+Since our data 
 
 
 
