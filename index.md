@@ -26,6 +26,20 @@ knitr::opts_chunk$set(echo = TRUE)
 [**d. sentiment analysis**](#d-sentiment-analysis)  
 [**e. Visualization**](#e-visualization)  
 
+## Introduction 
+## Part 1: Basic word segmentation 
+### a. Tokenize the text 
+### b. Use of word cloud 
+### c. sentiment analysis 
+### d. Visualization 
+## Part 2: Using LDA model 
+### a. What is LDA model and how it works?  
+### b. Creating corpus 
+### c. Use of word cloud 
+### d. sentiment analysis 
+### e. Visualization 
+
+
 ----
 
 ## Introduction 
