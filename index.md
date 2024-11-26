@@ -30,8 +30,7 @@ Natural Language Processing (NLP) is a computational capability that enables the
 
 （pic 1）
 
-The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset here（ https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download）
-However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
+The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download) However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
 
 ## Part 1: Basic word segmentation 
@@ -187,14 +186,14 @@ This will be the dataframe we will get after we run the code now:
 
 ## d. Visualization 
 
-
-Since our data 
+Take a closer look at our dataset, which includes a summary of positive and negative terms. Now, we aim to visualize this information intuitively.
+First, we want to determine the proportion of positive and negative sentiments in our dataset. To achieve this, we will use a **diverging bar chart**, which clearly represents the positive and negative values in the data. 
 
 ```
 ggplot(monthly_sentiment, aes(x = factor(Month), y = positive, fill = "Positive")) +
-  geom_col(alpha = 0.7) +  # set positive sentiment transparency 
-  geom_col(aes(y = -negative, fill = "Negative"), alpha = 0.7) +  # set positive sentiment transparency 
-  facet_wrap(~ Year, scales = "free_x") +  # Split plot into facets by Year
+  geom_col(alpha = 0.7) +                                         # set positive sentiment transparency 
+  geom_col(aes(y = -negative, fill = "Negative"), alpha = 0.7) +  # set negative sentiment transparency 
+  facet_wrap(~ Year, scales = "free_x") +                         # Split plot into facets by Year
   scale_fill_manual(values = c("Positive" = "firebrick", "Negative" = "steelblue")) +  # Customize colors
   labs(
     title = "Monthly Sentiment Trend",
@@ -206,7 +205,29 @@ ggplot(monthly_sentiment, aes(x = factor(Month), y = positive, fill = "Positive"
 ```
 
 This will be the output of our plot:
+
 ![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/monthly%20sentiment.png?raw=true)
+
+
+Next, we will examine how the sentiment score is distributed across different years. For this, we will use a **line chart** to visually represent the sentiment trend over time.。
+
+```
+ggplot(monthly_sentiment, aes(x = factor(Month), y = Sentiment, group = Year)) +
+  geom_line(color = "steelblue", size = 1) +        # Draw sentiment lines 
+  geom_point(color = "firebrick", size = 2) +        # Add points for each sentiment score
+  facet_wrap(~ Year, scales = "free_y") +          # Create separate plots for each year
+  labs(
+    title = "Monthly Sentiment Trends by Year",    
+    x = "Month",                                  
+    y = "Sentiment Score"                          
+  ) +
+  theme_minimal() 
+```
+
+And this will be the output of our plot:
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Monthly%20sentiment%20trends%20by%20year.png?raw=true)
+
 
 ## Part 2: Using LDA model 
 
