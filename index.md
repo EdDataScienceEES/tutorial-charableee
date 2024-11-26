@@ -28,7 +28,10 @@ Exploring the use of mapping techniques for conducting data analysis across diff
 
 Natural Language Processing (NLP) is a computational capability that enables the understanding of human written language. Applications of this technology include semantic analysis, topic modeling, and sentiment recognition. NLP techniques allow for the rapid analysis of large-scale textual data, enabling the identification of conceptual connections within documents.
 
-（pic 1）
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/Picture%20for%20tutorial/pic1_NLP.png?raw=true)
+
+Source:[AMAZIUM-What is NLP and how it is implemented in our lives](https://amazinum.com/insights/what-is-nlp-and-how-it-is-implemented-in-our-lives/) 
 
 The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download) However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
@@ -235,7 +238,10 @@ And this will be the output of our plot:
 
 LDA model
 
-(pic 2)
+
+![image](https://raw.githubusercontent.com/EdDataScienceEES/tutorial-charableee/refs/heads/master/Picture%20for%20tutorial/pic%202_LDA.webp)
+Source:[Medium-All about LDA in NLP](https://mohamedbakrey094.medium.com/all-about-latent-dirichlet-allocation-lda-in-nlp-6cfa7825034e) 
+
 
 
 
