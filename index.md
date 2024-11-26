@@ -149,6 +149,7 @@ wordcloud(
 ```
 
 This will be the output of our pointcloud:
+
 ![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/word%20cloud%20plotting.png?raw=true)
 
 ## c. Sentiment analysis 
@@ -236,13 +237,16 @@ And this will be the output of our plot:
 
 ## a. What is LDA model and how it works?  
 
-LDA model
+**The LDA model** is a commonly used topic modeling method. It helps users quickly identify influential topics within a large corpus of documents. This probabilistic model assumes that the distribution of words in each document is associated with specific underlying topics.
 
+For example, we can assume that each document contains a mixture of multiple topics. A report might allocate 30% of its content to the topic of **water pollution** and 70% to **plastic pollutio**n. Furthermore, each topic is characterized by a set of prominent keywords. For instance, the **water pollution** topic may include keywords like **water** and **river** while the plastic pollution topic might include keywords such as **manufacturing** and **factory**
+It is also possible for overlapping keywords to appear across topics. For example, if a document discusses plastic particles in rivers, the keyword **river** could be associated with both the water pollution and plastic pollution topics.
 
 ![image](https://raw.githubusercontent.com/EdDataScienceEES/tutorial-charableee/refs/heads/master/Picture%20for%20tutorial/pic%202_LDA.webp)
+
 Source:[Medium-All about LDA in NLP](https://mohamedbakrey094.medium.com/all-about-latent-dirichlet-allocation-lda-in-nlp-6cfa7825034e) 
 
-
+To start using 
 
 
 ## b. Creating corpus 
@@ -258,10 +262,10 @@ Source:[Medium-All about LDA in NLP](https://mohamedbakrey094.medium.com/all-abo
 ## e. Visualization 
 
 
-```{r cars}
-summary(cars)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
-
+If you want to further explore the use of LDA model in R, take a look at these links：
+[Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/topicmodeling) 
+[Topic Modeling with R](https://ladal.edu.au/topicmodels.html) 
+[Beginner’s Guide to LDA Topic Modelling with R](https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25) 
+[Topic Modeling Using Latent Dirichlet Allocation](https://www.analyticsvidhya.com/blog/2023/02/topic-modeling-using-latent-dirichlet-allocation-lda/) 
 
