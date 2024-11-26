@@ -14,18 +14,17 @@ Exploring the use of mapping techniques for conducting data analysis across diff
 [**Part 1: Basic word segmentation**](#part-1-basic-word-segmentation)  
 [**a. Tokenize the text**](#a-tokenize-the-text)  
 [**b. Use of word cloud**](#b-use-of-word-cloud)  
-[**c. sentiment analysis**](#c-sentiment-analysis)  
+[**c. Sentiment analysis**](#c-sentiment-analysis)  
 [**d. Visualization**](#d-visualization)  
 [**Part 2: Using LDA model**](#part-2-using-lda-model)  
 [**a. What is LDA model and how it works?**](#a-what-is-lda-model-and-how-it-works)  
 [**b. Creating corpus**](#b-creating-corpus)  
-[**c. Use of word cloud**](#c-use-of-word-cloud)  
-[**d. sentiment analysis**](#d-sentiment-analysis)  
+[**c. Analyze keyword weights for each topic**](#c-analyze-keyword-weights-for-each-topic)  
+[**d. Comprehensive keyword comparison and overall analysis**](#d-comprehensive-keyword-comparison-and-overall-analysis)  
 [**e. Visualization**](#e-visualization)  
 
----
-
 ## Introduction 
+
 
 Natural Language Processing (NLP) is a computational capability that enables the understanding of human written language. Applications of this technology include semantic analysis, topic modeling, and sentiment recognition. NLP techniques allow for the rapid analysis of large-scale textual data, enabling the identification of conceptual connections within documents.
 
@@ -34,7 +33,9 @@ Natural Language Processing (NLP) is a computational capability that enables the
 The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset here（ https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download）
 However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
+
 ## Part 1: Basic word segmentation 
+
 
 Before starting the tutorial, please ensure that you have downloaded and loaded the following extension packages:
 
@@ -49,9 +50,12 @@ Before starting the tutorial, please ensure that you have downloaded and loaded 
 | **wordcloud**   | Generate keyword clouds related to `pollution`.                                                  |
 | **ggpubr**      | Combine multiple plots and add shared legends for final visualization.                           |
 
+
 In this tutorial, we will begin by learning how to use the `tidytext`  package in R to perform text tokenization, keyword frequency analysis, word cloud visualization, and sentiment analysis on environmental-themed articles from The Guardian.
 
-### a. Tokenize the text 
+
+## a. Tokenize the text 
+
 
 First, create a new blank script in RStudio by navigating to the following path:
 
@@ -126,9 +130,11 @@ pollution_counts <- pollution_data %>%
   count(word, sort = TRUE)                           # Count the frequency 
 ```
 
-### b. Use of word cloud 
 
-`Pointcloud` is a simple way for us to visualize the frequency frame information. It can help us visually see the frequency of occurrence of the frame.
+## b. Use of word cloud 
+
+
+Pointcloud is a simple way for us to visualize the frequency frame information. It can help us visually see the frequency of occurrence of the frame.To visualise the pointcloud, we need to run the `wordcloud` package in R.
 
 ```
 wordcloud(
@@ -141,10 +147,9 @@ wordcloud(
 ```
 
 This will be the output of our pointcloud:
-
 ![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/word%20cloud%20plotting.png?raw=true)
 
-### c. sentiment analysis 
+## c. Sentiment analysis 
 
 _Sentiment analysis_ is crucial in our report, as it helps us uncovering the emotional tone embedded in the articles.By identifying the sentiment, we can then track how media frames issues, such as our topic, pollution, over time. 
 
@@ -179,29 +184,51 @@ This will be the dataframe we will get after we run the code now:
 | 2018 | 4     | 8        | 1        | -7        |
 | 2018 | 5     | 11       | 2        | -9        |
 
-### d. Visualization 
+
+## d. Visualization 
+
 
 Since our data 
 
+```
+ggplot(monthly_sentiment, aes(x = factor(Month), y = positive, fill = "Positive")) +
+  geom_col(alpha = 0.7) +  # set positive sentiment transparency 
+  geom_col(aes(y = -negative, fill = "Negative"), alpha = 0.7) +  # set positive sentiment transparency 
+  facet_wrap(~ Year, scales = "free_x") +  # Split plot into facets by Year
+  scale_fill_manual(values = c("Positive" = "firebrick", "Negative" = "steelblue")) +  # Customize colors
+  labs(
+    title = "Monthly Sentiment Trend",
+    x = "Month",
+    y = "Number of Sentiment Words",
+    fill = "Sentiment"
+  ) +
+  theme_minimal()  # Apply a minimal theme for clean and simple appearance
+```
 
+This will be the output of our plot:
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/monthly%20sentiment.png?raw=true)
 
 ## Part 2: Using LDA model 
 
-### a. What is LDA model and how it works?  
+## a. What is LDA model and how it works?  
+
+LDA model
+
+(pic 2)
 
 
 
-### b. Creating corpus 
+## b. Creating corpus 
 
 
 
-### c. Use of word cloud 
+## c. Analyze keyword weights for each topic
 
 
-### d. sentiment analysis 
+## d. Comprehensive keyword comparison and overall analysis
 
 
-### e. Visualization 
+## e. Visualization 
 
 
 ```{r cars}
