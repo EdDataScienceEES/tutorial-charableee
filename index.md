@@ -1,5 +1,5 @@
-_Xiaoye Ren_
-----
+## Natural Laguage Processing and LDA model in R
+*Xiaoye Ren*
 
 ## Tutorial aims 
 
@@ -576,3 +576,7 @@ Also, if you want to further explore the use of LDA model in R, take a look at t
 
 [Topic Modeling Using Latent Dirichlet Allocation](https://www.analyticsvidhya.com/blog/2023/02/topic-modeling-using-latent-dirichlet-allocation-lda/) 
 
+
+remote_theme: pages-themes/cayman@v0.2.0
+plugins:
+- jekyll-remote-theme # add this line to the plugins list if you already have one
