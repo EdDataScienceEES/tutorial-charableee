@@ -33,7 +33,7 @@ Natural Language Processing (NLP) is a computational capability that enables the
 
 Source:[AMAZIUM-What is NLP and how it is implemented in our lives](https://amazinum.com/insights/what-is-nlp-and-how-it-is-implemented-in-our-lives/) 
 
-The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download) However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
+The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download). However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
 
 ## Part 1: Basic word segmentation 
@@ -63,7 +63,7 @@ First, create a new blank script in RStudio by navigating to the following path:
 
 `File -> New File -> R Script` 
 
-Now, let’s configure our working environment. At this step, if you encounter the error message "No such file in directory", use ` getwd()`  to double-check your working directory.
+Now, let’s configure our working environment. At this step, if you encounter the error message "No such file in directory", just simply use ` getwd()`  to double-check your working directory.
 
 ```
 # Coding Club tutorial
@@ -85,7 +85,8 @@ library(ggpubr)
 news_data <- read.csv("your_file_path")
 ```
 
-Now, we want to study topics related to `pollution` . First, we will create a frame related to the pollution topic.
+Now, we want to study topics related to **pollution** . First, we will create a frame related to the pollution topic, let's call it `pollution_data`. 
+
 When observing the raw data dataset, you may notice some blank entries, which can interfere with subsequent analysis. Therefore, we will remove these entries. Additionally, if we intend to analyze the data by year, we observe that some years contain only a small amount of data. To ensure reliable analysis, we will exclude these underrepresented years.
 
 ```
@@ -246,17 +247,86 @@ It is also possible for overlapping keywords to appear across topics. For exampl
 
 Source:[Medium-All about LDA in NLP](https://mohamedbakrey094.medium.com/all-about-latent-dirichlet-allocation-lda-in-nlp-6cfa7825034e) 
 
-To start using 
-
-
 ## b. Creating corpus 
 
+To start using the LDA model in R, we need to use the `topicmodels` and `tm`. We will first start from creating `corpus` by using our previous frame and into content`pollution_data$Intro.Text`.
 
+```
+# Create a corpus and clean the text
+corpus <- Corpus(VectorSource(pollution_data$Intro.Text))
+```
+Then, we use `tm` package to convert text and clear the text.
+
+```
+corpus <- tm_map(corpus, content_transformer(function(x) {
+  x <- tolower(x)                           # Convert text to lowercase
+  x <- gsub("['’`]", "", x)                 # Remove single quotes and similar characters
+  x <- gsub("[-–—]", " ", x)                # Replace dashes with spaces
+  x <- removePunctuation(x)                 # Remove punctuation
+  x <- removeNumbers(x)                     # Remove numbers
+  x <- removeWords(x, stopwords("en"))      # Remove common stop words
+  x <- stripWhitespace(x)                   # Remove extra whitespace
+  return(x)
+}))
+```
+After completing the text cleaning process, we proceed to create a **Document-Term Matrix (DTM)**. This step transforms the raw, processed data into a structured format that can be understood and utilized by the LDA model for further computation.
+
+```
+# Create a document-term matrix
+dtm <- DocumentTermMatrix(corpus)
+```
+Next, we move to the most interetsing step: training our **LDA model**. Let's begin by running the following code and allow about 30 seconds for the model to load, as LDA can take some time to process the data:
+
+```
+lda_model <- LDA(dtm, k = 20, control = list(seed = 123)) # Set random seed for reproducibility
+
+```
+In this code, we configure three main parameters:
+
+`dtm`
+
+The **Document-Term Matrix**, which is the structured input prepared earlier for the LDA model.
+
+`k = 20`
+
+The number of topics to extract. For example, here we have set the model to identify 20 distinct topics from the dataset.
+
+`control = list(seed = 123)`
+
+This sets the `control` options for the model training. Specifically, the `seed` parameter ensures consistent results across multiple runs. Since LDA involves random initialization, the output can vary with each execution. Setting a seed ensures reproducibility, allowing the same results every time the code is run.
+
+
+Finally, we extract the top keywords for each topic. To preview the top 10 keywords for the generated topics, run the following code:
+```
+topic_terms <- terms(lda_model, 10)
+print(terms(lda_model, 10))
+```
+Take a look at the output you get for now, what did you observed?
 
 ## c. Analyze keyword weights for each topic
 
 
+
+```
+# Extract the topic-term distribution matrix (keyword weights for each topic)
+beta <- tidy(lda_model, matrix = "beta") # Use the tidytext package
+
+# Retrieve the top n keywords for each topic and their weights
+n <- 10
+top_terms <- beta %>%
+  group_by(topic) %>%
+  slice_max(beta, n = n, with_ties = FALSE) %>% # Select the top n terms for each topic
+  ungroup()
+
+# Display the top keywords and weights
+print(top_terms)
+```
+
+
+
 ## d. Comprehensive keyword comparison and overall analysis
+
+
 
 
 ## e. Visualization 
