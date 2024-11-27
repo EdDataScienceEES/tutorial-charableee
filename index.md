@@ -470,7 +470,6 @@ Now,try plot this diagram：
 
 ```
 print(plot_1)
-
 ```
 This is the first diagram we expected to have:
 
@@ -527,8 +526,7 @@ plot_2 <- ggplot(yearly_trends, aes(x = Year, y = Proportion, fill = Category)) 
 We simply output the diagram to see the result：
  
  ```
-print(plot_2)
-
+ print(plot_2)
 ```
 
 The second diagram we expected to have will be:
@@ -557,7 +555,7 @@ And this will be our final output:
 
 ##  Extra resouorces
 
-There are some related topics in coding club tutorial you may get intersted relate to this tutorial.
+There are some related topics in coding club tutorial you may interested relate to this tutorial.
 
 If you want to learn more on survey topic analysis, see:
 
