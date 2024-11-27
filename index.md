@@ -33,13 +33,12 @@ Natural Language Processing (NLP) is a computational capability that enables the
 
 Source:[AMAZIUM-What is NLP and how it is implemented in our lives](https://amazinum.com/insights/what-is-nlp-and-how-it-is-implemented-in-our-lives/) 
 
-The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download). However, we recommended you to download the version of the dataset with the original article text column removed here（）In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
+The raw dataset we use in this class is from Environment News Dataset, you can find the raw dataset [here]( https://www.kaggle.com/datasets/beridzeg45/guardian-environment-related-news?resource=download). However, we recommended you to download the version of the dataset with the original article text column removed [here]( https://github.com/charableee/Guide-to-NLP-in-R-script).In this tutorial, we will primarily use this dataset to analyze the introduction section of the articles.
 
 
 ## Part 1: Basic word segmentation 
 
-
-Before starting the tutorial, please ensure that you have downloaded and loaded the following extension packages:
+Before starting our tutorial, please ensure that you have downloaded and loaded the following extension packages:
 
 #### Summary of Library Contributions in Code
 
@@ -550,10 +549,10 @@ And this will be our final output:
 
 ![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Pollution%20topics.png?raw=true)
 
-**Congradulations, you finish all this tutorial! :)**  By the end of this tutorial, you have gained a solid understanding of how to use the tidytext package for data analysis and visualization in R. Now, you will be able to perform sentiment scoring with basic lexicons, apply the LDA topic model for uncovering hidden themes, and utilize mapping techniques to analyze and visualize data across multiple documents. These skills will equip you to handle textual data efficiently and extract meaningful insights for your future projects. 
+**Congratulations, you’ve completed the tutorial!! :)**  By the end of this tutorial, you have gained a solid understanding of how to use the tidytext package for data analysis and visualization in R. Now, you will be able to perform sentiment scoring with basic lexicons, apply the LDA topic model for uncovering hidden themes, and utilize mapping techniques to analyze and visualize data across multiple documents. These skills will equip you to handle textual data efficiently and extract meaningful insights for your future projects. 
 
 
-##  Extra resouorces
+##  Extra resources
 
 There are some related topics in coding club tutorial you may interested relate to this tutorial.
 
