@@ -450,9 +450,126 @@ This will be the final dataframe for us to work on the data visualization：
 
 ## e. Visualization 
 
+With the data obtained above, the first and most straightforward insight we can observe is the yearly trends of different topics in the dataset. To visualize this, we can start by creating a simple line chart titled **Pollution Topics Over Time**.
+
+```
+plot_1 <- ggplot(yearly_trends, aes(x = Year, y = Count, color = Category, group = Category)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Pollution Topics Over Time",
+    x = "Year",
+    y = "Number of Articles",
+    color = "Pollution Type"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Now,try plot this diagram：
+
+```
+print(plot_1)
+
+```
+This is the first diagram we expected to have:
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Pollution%20topics%20over%20time.png?raw=true)
+
+Next, we can perform some basic calculations to extract additional insights. We now have a `Category` column indicating the type of topic for each data entry, as well as a `Count` column representing the number of corresponding documents. Using this data, we can compute basic metrics.
+
+| Year | Category | Count |
+|------|----------|-------|
+| 2018 | Air      | 3     |
+| 2018 | Plastic  | 2     |
+| 2019 | Air      | 3     |
+
+For example, consider the following example: in 2018, the "Air" topic appears 3 times, and the "Plastic" topic appears 2 times. In 2019, only the "Air" topic appears 3 times. We can calculate the relative proportions for each year to better understand the trends:
+
+```
+Overall count in 2018 ：3 + 2 = 5
+Overall count in 2019 ：3
+```
+
+We use formula `Count / sum(Count)`. Then, our proportion will be:
+
+```
+In 2018：
+Air topic proportion：3 / (3 + 2) = 3 / 5 = 0.6
+Plastic topic proportion：2 / (3 + 2) = 2 / 5 = 0.4
+In 2019：
+Air topic proportion：3 / 3 = 1.0
+```
+
+These calculations allow us to visualize the yearly relative proportions of each topic, and this can be work in R using the following code:
+
+```
+# Calculate yearly proportions for each category
+yearly_trends <- yearly_trends %>%
+  group_by(Year) %>%
+  mutate(Proportion = Count / sum(Count)) # Here, we calculate the propotion 
+```
+ Now we just need to run the following code to visualize our output：
+ 
+```
+plot_2 <- ggplot(yearly_trends, aes(x = Year, y = Proportion, fill = Category)) +
+  geom_bar(stat = "identity", position = "stack") +
+  labs(
+    title = "Proportion of Pollution Topics by Year",
+    x = "Year",
+    y = "Proportion",
+    color = "Pollution Type"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+ 
+We simply output the diagram to see the result：
+ 
+ ```
+print(plot_2)
+
+```
+
+The second diagram we expected to have will be:
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Proportion%20of%20Pollution%20Topics%20by%20Year.png?raw=true)
+ 
+Great job! It seems like it would be more obvious if we can combine these two diagram together, run this:
+
+```
+combined_plot <- ggarrange(
+  plot_1, 
+  plot_2, 
+  nrow = 1,                # Place the plots side by side
+  ncol = 2, 
+  common.legend = TRUE,    # Share a common legend
+  legend = "bottom"        # Position the legend at the bottom
+)
+```
+
+And this will be our final output:
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Pollution%20topics.png?raw=true)
+
+**Congradulations, you finish all this tutorial! :)**  By the end of this tutorial, you have gained a solid understanding of how to use the tidytext package for data analysis and visualization in R. Now, you will be able to perform sentiment scoring with basic lexicons, apply the LDA topic model for uncovering hidden themes, and utilize mapping techniques to analyze and visualize data across multiple documents. These skills will equip you to handle textual data efficiently and extract meaningful insights for your future projects. 
 
 
-If you want to further explore the use of LDA model in R, take a look at these links：
+##  Extra resouorces
+
+There are some related topics in coding club tutorial you may get intersted relate to this tutorial.
+
+If you want to learn more on survey topic analysis, see:
+
+[Analysing ordinal data, surveys, count data](https://ourcodingclub.github.io/tutorials/qualitative/) 
+
+If you want to learn more on data visualization, see:
+
+[Beautiful and informative data visualisation](https://ourcodingclub.github.io/tutorials/datavis/) 
+
+[Data visualisation 2](https://ourcodingclub.github.io/tutorials/data-vis-2/) 
+
+Also, if you want to further explore the use of LDA model in R, take a look at these links：
 
 [Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/topicmodeling) 
 
