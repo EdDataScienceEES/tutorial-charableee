@@ -279,7 +279,6 @@ Next, we move to the most interetsing step: training our **LDA model**. Let's be
 
 ```
 lda_model <- LDA(dtm, k = 20, control = list(seed = 123)) # Set random seed for reproducibility
-
 ```
 In this code, we configure three main parameters:
 
@@ -305,23 +304,74 @@ Take a look at the output you get for now, what did you observed?
 
 ## c. Analyze keyword weights for each topic
 
+Now that we have identified 20 topics along with the top 10 keywords for each topic, so: how can we intuitively identify the keywords for each topic and visualize this information?
 
+First, we need to create a clear and organized dataframe that displays the weights of each word for each topic, as calculated by the LDA model. Start by running the following code:
 
 ```
 # Extract the topic-term distribution matrix (keyword weights for each topic)
-beta <- tidy(lda_model, matrix = "beta") # Use the tidytext package
+beta <- tidy(lda_model, matrix = "beta") # get beta matrix
+````
+This code extracts the beta matrix, which represents the topic-word distribution. Below is an example of the initial dataframe we obtain from this step:
 
-# Retrieve the top n keywords for each topic and their weights
+| topic | term | beta            |
+|-------|------|-----------------|
+| 1     | big  | 3.674873e-194   |
+| 2     | big  | 1.944736e-193   |
+| 3     | big  | 6.070483e-03    |
+
+However, since we are only interested in the top 10 words for each topic, we need to further filter the matrix. Use the following code to refine the results:
+
+```
+#Retrieve the top n keywords for each topic and their weights
 n <- 10
 top_terms <- beta %>%
   group_by(topic) %>%
   slice_max(beta, n = n, with_ties = FALSE) %>% # Select the top n terms for each topic
   ungroup()
-
-# Display the top keywords and weights
-print(top_terms)
 ```
+This is the dataframe we get for the next step：
 
+| topic | term       | beta       |
+|-------|------------|------------|
+| 1     | pollution  | 0.076661612|
+| 1     | crisis     | 0.027573291|
+| 1     | climate    | 0.019362111|
+
+Here’s an important detail: in the line `slice_max(beta, n = 10, with_ties = FALSE)`, the `with_ties = FALSE` parameter ensures that we strictly limit each topic to **exactly 10 keywords**. Without this option, it is possible for some topics to include more than 10 words due to ties in beta values.
+
+Finally, run the code below to generate a summarized dataframe that lists the top 10 keywords for each topic:
+
+```
+summary_table <- top_terms %>%
+  group_by(topic) %>%
+  summarize(
+    keywords = paste(term, collapse = ", "), # Concatenate keywords
+    avg_weight = mean(beta)                 # Calculate average weight of keywords
+  )
+```
+And this will be our final expected dataframe：
+
+| topic | keywords                                           | avg_weight |
+|-------|----------------------------------------------------|------------|
+| 1     | pollution, crisis, climate, will, report, scientists, deaths, air, ha... | 0.02107225 |
+| 2     | pollution, air, can, found, european, year, plastic, study, deca...     | 0.02579200 |
+| 3     | pollution, air, wood, good, burning, says, causes, will, cut, rise      | 0.01903042 |
+
+Every data is ready to go for now! Let's run the code below to get a beautiful diagram:
+
+```
+top_terms %>%
+  ggplot(aes(x = reorder_within(term, beta, topic), y = beta, fill = factor(topic))) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(~ topic, scales = "free") +
+  coord_flip() +
+  labs(x = "Keywords", y = "Weight", title = "Top 10 Keywords for Each Topic") +
+  scale_x_reordered() # Maintain consistent keyword order within facets
+```
+This is the diagram we expected to have:
+
+![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/Top%2010%20Keywords%20for%20each%20topic.png?raw=true)
 
 
 ## d. Comprehensive keyword comparison and overall analysis
@@ -334,6 +384,7 @@ print(top_terms)
 
 
 If you want to further explore the use of LDA model in R, take a look at these links：
+
 [Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/topicmodeling) 
 [Topic Modeling with R](https://ladal.edu.au/topicmodels.html) 
 [Beginner’s Guide to LDA Topic Modelling with R](https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25) 
