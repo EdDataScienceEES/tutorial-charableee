@@ -213,7 +213,7 @@ This will be the output of our plot:
 ![image](https://github.com/EdDataScienceEES/tutorial-charableee/blob/master/diagram/monthly%20sentiment.png?raw=true)
 
 
-Next, we will examine how the sentiment score is distributed across different years. For this, we will use a **line chart** to visually represent the sentiment trend over time.。
+Next, we will examine how the sentiment score is distributed across different years. For this, we will use a **line chart** to visually represent the sentiment trend over time.
 
 ```
 ggplot(monthly_sentiment, aes(x = factor(Month), y = Sentiment, group = Year)) +
@@ -576,7 +576,3 @@ Also, if you want to further explore the use of LDA model in R, take a look at t
 
 [Topic Modeling Using Latent Dirichlet Allocation](https://www.analyticsvidhya.com/blog/2023/02/topic-modeling-using-latent-dirichlet-allocation-lda/) 
 
-
-remote_theme: pages-themes/cayman@v0.2.0
-plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
