@@ -376,7 +376,76 @@ This is the diagram we expected to have:
 
 ## d. Comprehensive keyword comparison and overall analysis
 
+Now, we have the top 10 keywords for each topic and we just made a beautiful diagram. Take a look at the diagram, it seems like the "pollution" keyword often appears with topic words **air** and **plastic**.
+So,how can we analyze data related to the topics "air" and "pollution"? To begin, we will customize a set of keywords and match them to their respective topic numbers.
 
+We already have the `topic_terms` dataset, so we will use `lapply()` to iterate through the list of keywords for each category. Simultaneously, we will use `sapply()` to check if the keywords we defined earlier are present in the topic terms. Finally, we will use `which()` to extract the topic numbers that match our keywords.
+
+```
+# Define keyword categories and corresponding terms
+keywords <- list(
+  Air = "air",
+  Plastic = "plastic"
+)
+
+# Automatically map topic numbers based on keywords
+topic_map <- lapply(keywords, function(keyword) {
+  which(sapply(topic_terms, function(terms) any(terms %in% keyword)))
+})
+```
+In this code, `which()` returns the indices of the boolean vector in `sapply()` where the value is **TRUE**. Once all operations are complete, the resulting data will be stored in our `topic_map`. Next, we will append the topic numbers to our original `pollution_data` dataframe, allowing us to identify the main topic for each document.
+
+```
+pollution_data$Main_Topic <- topics(lda_model)
+```
+At this stage, we can examine our updated dataframe to check its current state:
+
+| Intro.Text                                                       | Date.Published | Main_Topic |
+|------------------------------------------------------------------|----------------|------------|
+| Reduction largely wiped out by a rise in carbon pollution from… | 2018-01-18     | 3          |
+| UK watchdog bans advert claiming lowest CO2 pollution of …       | 2018-01-26     | 11         |
+| It’s clean transport, costs nothing and causes no pollution, …   | 2018-01-31     | 6          |
+
+Now, we’re ready to map topic numbers to their respective categories. Run the following code:
+
+```
+pollution_data <- pollution_data %>%
+  mutate(
+    Category = case_when(
+      Main_Topic %in% topic_map$Air ~ "Air",
+      Main_Topic %in% topic_map$Plastic ~ "Plastic",
+      TRUE ~ "Other"  # Unclassified topics
+    ),
+    Year = format(as.Date(Date.Published), "%Y")  # Extract the year
+  )
+```
+...And take another look at our next dataframe:
+
+| Intro.Text                                                       | Date.Published | Main_Topic | Category | Year |
+|------------------------------------------------------------------|----------------|------------|----------|------|
+| UK and eight other states will need to take drastic measures…   | 2018-02-14     | 17         | Plastic  | 2018 |
+| Ultimately the only thing that matters: we need to cut carbon…   | 2018-02-15     | 4          | Other    | 2018 |
+| In nearly 30 years, a bunch of surfers concerned about pollu…    | 2018-02-18     | 12         | Air      | 2018 |
+
+
+You will see that a new column, `Category`, has been added. This column contains three possible values: `Air`, `Plastic`, and `Other`. In the previous code, we used the logic  `Main_Topic %in% topic_map$Air ~ "Air"` This assigns the category `Air` to any document whose `Main_Topic` matches the topics in `topic_map$Air`. This dataframe will serve as the foundation for the next step in data visualization.
+
+Finally, we separate the `Air` and `Plastic` data into individual datasets for further visualization. Run the following code to extract these subsets:
+
+```
+# Summarize document counts by year and category
+yearly_trends <- pollution_data %>%
+  filter(Category != "Other") %>%  # We only want data from Air and plastic, so we exclude Other 
+  group_by(Year, Category) %>%
+  summarize(Count = n(), .groups = "drop")
+``` 
+This will be the final dataframe for us to work on the data visualization：
+
+| Year | Category | Count |
+|------|----------|-------|
+| 2018 | Air      | 3     |
+| 2018 | Plastic  | 2     |
+| 2019 | Air      | 3     |
 
 
 ## e. Visualization 
@@ -386,7 +455,10 @@ This is the diagram we expected to have:
 If you want to further explore the use of LDA model in R, take a look at these links：
 
 [Text Mining with R: A Tidy Approach](https://www.tidytextmining.com/topicmodeling) 
+
 [Topic Modeling with R](https://ladal.edu.au/topicmodels.html) 
+
 [Beginner’s Guide to LDA Topic Modelling with R](https://towardsdatascience.com/beginners-guide-to-lda-topic-modelling-with-r-e57a5a8e7a25) 
+
 [Topic Modeling Using Latent Dirichlet Allocation](https://www.analyticsvidhya.com/blog/2023/02/topic-modeling-using-latent-dirichlet-allocation-lda/) 
 
